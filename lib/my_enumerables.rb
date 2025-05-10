@@ -1,5 +1,5 @@
 module Enumerable
-  def my_all? # doesn't work - same as any?
+  def my_all?
     self.my_each do |elem|
       return false unless yield(elem)
     end
@@ -38,15 +38,32 @@ module Enumerable
     new_array
   end
   
-  def my_count # doesn't work
+  def my_count
     count = 0
-    new_array = []
-    for item in self
-      if yield(item)
-        new_array << item
-      end
+    if block_given?
+      self.my_each do |elem|
+        count += 1 if yield(elem) == true 
+        end
+    else 
+      count = self.length
     end
-    count = new_array.length
+    count
+  end
+
+  def my_each_with_index
+    index = 0
+    for item in self do
+        yield(item, index)
+        index += 1
+    end
+  end
+
+  def my_inject(initial_value) # doesn't work
+    # [1,2,3,4].inject(10) { |result, element| result + element } = 20 (10 + 1 + 2 + 3 + 4)
+    result = initial_value
+    self.my_each do |result, element|
+      result = yield(result, element)
+    end
   end
 
 end
