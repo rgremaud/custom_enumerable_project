@@ -58,12 +58,12 @@ module Enumerable
     end
   end
 
-  def my_inject(initial_value) # doesn't work
-    # [1,2,3,4].inject(10) { |result, element| result + element } = 20 (10 + 1 + 2 + 3 + 4)
+  def my_inject(initial_value)
     result = initial_value
-    self.my_each do |result, element|
+    self.my_each do |element|
       result = yield(result, element)
     end
+    result
   end
 
 end
